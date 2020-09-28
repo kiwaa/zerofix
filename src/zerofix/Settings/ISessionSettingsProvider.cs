@@ -8,7 +8,6 @@ namespace zerofix
 {
     public interface ISessionSettingsProvider
     {
-        //IEnumerable<SessionIdentity> GetSessions();
-        //ISessionSettings Get(SessionIdentity sessionId);
+        IEnumerable<ISessionSettings> GetAll();
     }
 }

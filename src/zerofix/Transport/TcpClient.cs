@@ -11,7 +11,7 @@ namespace zerofix
     /// TCP client is used to read/write data from/into the connected TCP server
     /// </summary>
     /// <remarks>Thread-safe</remarks>
-    public class TcpClient : IDisposable
+    internal class TcpClient : IDisposable
     {
         /// <summary>
         /// Initialize TCP client with a given server IP address and port number

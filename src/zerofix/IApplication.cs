@@ -2,6 +2,7 @@
 {
     public interface IApplication
     {
-        void OnMessage(Message msg);
+        void OnCreate(Session session);
+        void OnMessage(FixMessage msg);
     }
 }

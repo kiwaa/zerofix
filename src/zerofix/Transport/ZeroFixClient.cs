@@ -4,26 +4,25 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
-using zerofix.Messages;
 
 namespace zerofix
 {
     internal class ZeroFixClient : TcpClient, ITransport
     {
         private Session _session;
-        private MessageParser _parser;
+        private FixMessageReader _parser;
         public ZeroFixClient(Session session, string address, int port) : base(address, port)
         {
             _session = session;
             _session.SetTransport(this);
-            _parser = new MessageParser();
+            _parser = new FixMessageReader();
         }
 
         public ZeroFixClient(Session session, IPAddress address, int port) : base(address, port)
         {
             _session = session;
             _session.SetTransport(this);
-            _parser = new MessageParser();
+            _parser = new FixMessageReader();
         }
 
         protected override void OnConnected()

@@ -10,7 +10,7 @@ namespace zerofix
     /// <summary>
     /// Dynamic byte buffer
     /// </summary>
-    public class Buffer
+    internal class Buffer
     {
         private byte[] _data;
         private long _size;
