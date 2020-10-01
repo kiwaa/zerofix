@@ -9,16 +9,12 @@ namespace ZeroFix.TradeClient
 {
     class SettingsProviderMock : ISessionSettingsProvider
     {
-        public IEnumerable<SessionIdentity> GetSessions()
+        public IEnumerable<ISessionSettings> GetAll()
         {
             return new[]
             {
-                new SessionIdentity("FIX.4.2", "CLIENT1", "EXCHANGE")
+                new SessionSettingsMock()
             };
-        }
-        public ISessionSettings Get(SessionIdentity sessionId)
-        {
-            return new SessionSettingsMock();
         }
     }
 }
