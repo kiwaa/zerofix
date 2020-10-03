@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using zerofix;
 
-namespace ZeroFix.TradeClient
+namespace ZeroFix.Initiator
 {
     internal class TradeApp : IApplication
     {

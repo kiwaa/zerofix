@@ -13,20 +13,32 @@ namespace zerofix
 
         public IFixField this[int tag] => _map[tag];
 
-        public void Add(int key, string value)
+        public FixFieldDictionary Add(int key, string value)
         {
             _map[key] = new FixField<string>(key, value);
+            return this;
         }
-        public void Add(int key, int value)
+        public FixFieldDictionary Add(int key, int value)
         {
             _map[key] = new FixField<int>(key, value);
+            return this;
         }
-        public void Add(IFixField field)
+        public FixFieldDictionary Add(IFixField field)
         {
             _map[field.Tag] = field;
+            return this;
         }
 
-        public int GetBodyLength()
+        public IEnumerator<IFixField> GetEnumerator()
+        {
+            return _map.Values.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+        public int CalculateBodyLength()
         {
             // naive
             var body = 0;
@@ -39,15 +51,9 @@ namespace zerofix
             return body;
         }
 
-        public IEnumerator<IFixField> GetEnumerator()
-        {
-            return _map.Values.GetEnumerator();
-        }
-
         public int GetSum()
         {
             // naive
-            var total = 0;
             var sb = new StringBuilder();
             ToString(sb, '\u0001');
             var bytes = Encoding.UTF8.GetBytes(sb.ToString());
@@ -56,6 +62,7 @@ namespace zerofix
 
         public void ToString(StringBuilder sb, char delimeter)
         {
+            // naive
             foreach (var pair in _map)
             {
                 sb.Append(pair.Key)
@@ -63,11 +70,6 @@ namespace zerofix
                     .Append(pair.Value.AsString())
                     .Append(delimeter);
             }
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
         }
     }
 }

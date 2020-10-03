@@ -1,40 +1,28 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace zerofix
 {
-    public class Session
+    public abstract class Session
     {
-        private HashSet<char> _sessionLevel = new HashSet<char>(new[] { '0', '1', '2', '3', '4', '5', 'A' });
-
         private readonly IApplication _application;
         private ITransport _transport;
 
         private int _seqNum = 1;
 
-        public SessionIdentity ID { get; }
+        public SessionIdentity ID { get; protected set; }
+        public SessionIdentity RevertID { get; protected set; }
+
+        public int HeartbeatInterval { get; protected set; }
 
         public Session(IApplication application)
         {
             _application = application;
-            ID = new SessionIdentity("FIX.4.2", "CLIENT1", "EXECUTOR");
         }
 
-        internal void OnConnected()
+        internal virtual void OnConnected()
         {
             Console.WriteLine("connected");
-
             _application.OnCreate(this);
-            var msg = new FixMessage(ID, 'A');
-            msg.Add(52, DateTime.UtcNow.ToString("yyyyMMdd-HH:mm:ss.fff"));
-            msg.Add(98, "0");
-            msg.Add(108, "30");
-
-            SendAsync(msg);
         }
 
         public void SendAsync(FixMessage msg)
@@ -52,34 +40,7 @@ namespace zerofix
         internal void OnMessage(FixMessage msg)
         {
             Console.WriteLine("IN: " + msg.ToString());
-            if (IsSessionLevelMessage(msg))
-                Process(msg);
-            else
-            {
-                _application.OnMessage(msg);
-            }
-        }
-
-        private void Process(FixMessage msg)
-        {
-            var field = msg.Header[Tags.MsgType] as FixField<char>;
-
-            switch (field.Value)
-            {
-                case '0':
-                    var hb = new FixMessage(ID, '0');
-                    hb.Add(52, DateTime.UtcNow.ToString("yyyyMMdd-HH:mm:ss.fff"));
-                    SendAsync(hb);
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        private bool IsSessionLevelMessage(FixMessage msg)
-        {
-            var field = msg.Header[Tags.MsgType] as FixField<char>;
-            return _sessionLevel.Contains(field.Value);
+            OnMessageInternal(msg);
         }
 
         internal void OnDisconnected()
@@ -87,5 +48,50 @@ namespace zerofix
             Console.WriteLine("disconnected");
             // todo: connect again
         }
+
+        private void OnMessageInternal(FixMessage msg)
+        {
+            var field = msg.Header[Tags.MsgType] as FixField<char>;
+
+            switch (field.Value)
+            {
+                case '0':
+                    var hb = new FixMessage(ID, '0');
+                    hb.Add(52, DateTime.UtcNow.ToString(FixSettings.DateTimeFormat));
+                    SendAsync(hb);
+                    break;
+                case '1':
+                    var testAck = new FixMessage(ID, '0');
+                    testAck.Add(52, DateTime.UtcNow.ToString(FixSettings.DateTimeFormat));
+                    testAck.Add(msg[Tags.TestReqID]);
+                    SendAsync(testAck);
+                    break;
+                case '2':
+                    throw new NotImplementedException();
+                case '3':
+                    throw new NotImplementedException();
+                case '4':
+                    throw new NotImplementedException();
+                case '5':
+                    _transport.DisconnectAsync();
+                    break;
+                case 'A':
+                    ID = new SessionIdentity(msg.Header[Tags.BeginString].AsString(), msg.Header[Tags.SenderCompID].AsString(), msg.Header[Tags.TargetCompID].AsString());
+                    RevertID = new SessionIdentity(msg.Header[Tags.BeginString].AsString(), msg.Header[Tags.TargetCompID].AsString(), msg.Header[Tags.SenderCompID].AsString());
+                    //HeartbeatInterval = msg[Tag]
+
+                    var logon = new FixMessage(RevertID, 'A');
+                    logon.Add(52, DateTime.UtcNow.ToString(FixSettings.DateTimeFormat));
+                    logon.Add(98, "0");
+                    logon.Add(108, "30");
+                    SendAsync(logon);
+                    break;
+                default:
+                    // non session level message
+                    _application.OnMessage(msg);
+                    break;
+            }
+        }
+
     }
 }

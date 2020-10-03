@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using zerofix;
 
-namespace ZeroFix.Initiator
+namespace ZeroFix.Acceptor
 {
     class SettingsProviderMock : ISessionSettingsProvider
     {

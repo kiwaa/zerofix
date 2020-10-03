@@ -3,5 +3,6 @@
     internal interface ITransport
     {
         bool SendAsync(byte[] raw);
+        bool DisconnectAsync();
     }
 }

@@ -1,27 +1,19 @@
-﻿using System.Collections.Generic;
-using zerofix;
+﻿using zerofix;
 
-namespace ZeroFix.TradeClient
+namespace ZeroFix.Initiator
 {
     internal class SessionSettingsMock : ISessionSettings
     {
-        private readonly Dictionary<string, string> _dict = new ();
-
         public SessionSettingsMock()
         {
         }
 
-        public bool Has(string key)
-        {
-            return false;
-        }
-
-        public bool GetLong(string key)
+        public string Get(string key)
         {
             throw new System.NotImplementedException();
         }
 
-        public string GetString(string key)
+        public bool Has(string key)
         {
             throw new System.NotImplementedException();
         }

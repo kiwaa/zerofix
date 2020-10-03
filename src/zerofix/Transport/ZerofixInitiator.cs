@@ -7,18 +7,18 @@ using System.Threading.Tasks;
 
 namespace zerofix
 {
-    internal class ZeroFixClient : TcpClient, ITransport
+    internal class ZerofixInitiator : TcpClient, ITransport
     {
         private Session _session;
         private FixMessageReader _parser;
-        public ZeroFixClient(Session session, string address, int port) : base(address, port)
+        public ZerofixInitiator(Session session, string address, int port) : base(address, port)
         {
             _session = session;
             _session.SetTransport(this);
             _parser = new FixMessageReader();
         }
 
-        public ZeroFixClient(Session session, IPAddress address, int port) : base(address, port)
+        public ZerofixInitiator(Session session, IPAddress address, int port) : base(address, port)
         {
             _session = session;
             _session.SetTransport(this);

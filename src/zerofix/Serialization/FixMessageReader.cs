@@ -71,6 +71,11 @@ namespace zerofix
                         Debug.Assert(span[read] == 1);
                         read++; // delimeter
                         return new FixField<string>(8, version);
+                    case '4':
+                        version = "FIX.4.4";
+                        Debug.Assert(span[read] == 1);
+                        read++; // delimeter
+                        return new FixField<string>(8, version);
                 }
             }
             throw new NotImplementedException();

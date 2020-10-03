@@ -25,6 +25,7 @@ namespace zerofix
             Header.Add(Tags.BeginString, sessionId.BeginString);
             Header.Add(Tags.BodyLength, string.Empty);
             Header.Add(Tags.MsgType, type.ToString());
+            Header.Add(Tags.MsgSeqNum, string.Empty);
             Header.Add(Tags.SenderCompID, sessionId.SenderCompID);
             Header.Add(Tags.TargetCompID, sessionId.TargetCompID);
         }
@@ -60,7 +61,7 @@ namespace zerofix
 
         public override string ToString()
         {
-            Header.Add(Tags.BodyLength, Header.GetBodyLength() + GetBodyLength());
+            Header.Add(Tags.BodyLength, Header.CalculateBodyLength() + CalculateBodyLength());
             var sum = Header.GetSum() + GetSum();
             Trailer.Add(Tags.CheckSum, (sum % 256).ToString("000"));
 

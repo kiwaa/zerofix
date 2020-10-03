@@ -1,7 +1,7 @@
 ﻿using System;
 using zerofix;
 
-namespace ZeroFix.TradeClient
+namespace ZeroFix.Initiator
 {
     class Program
     {
@@ -11,7 +11,7 @@ namespace ZeroFix.TradeClient
             try
             {
                 var application = new TradeApp();
-                var initiator = new SocketInitiator(application, new SettingsProviderMock());
+                var initiator = new SessionStarter(application, new SettingsProviderMock());
 
                 initiator.Start();
                 application.Run();

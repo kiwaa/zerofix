@@ -10,18 +10,18 @@ namespace ZeroFix.Acceptor
             Console.WriteLine("Hello World!");
             try
             {
-                //IApplication app = new AcceptorApp();
-                //IAcceptor acceptor = new ThreadedSocketAcceptor(app, new SessionSettingsMock());
+                IApplication app = new AcceptorApp();
+                var acceptor = new SessionStarter(app, new SettingsProviderMock());
 
-                //acceptor.Start();
-                //Console.WriteLine("press <enter> to quit");
-                //Console.Read();
-                //acceptor.Stop();
+                acceptor.Start();
+                Console.WriteLine("press <enter> to quit");
+                Console.Read();
+                acceptor.Stop();
             }
             catch (System.Exception e)
             {
-                Console.WriteLine("==FATAL ERROR==");
-                Console.WriteLine(e.ToString());
+                Console.WriteLine(e.Message);
+                Console.WriteLine(e.StackTrace);
             }
         }
     }
