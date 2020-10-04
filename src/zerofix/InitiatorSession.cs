@@ -19,7 +19,7 @@ namespace zerofix
             base.OnConnected();
 
             var msg = new FixMessage(ID, 'A');
-            msg.Add(52, DateTime.UtcNow.ToString(FixSettings.DateTimeFormat));
+            msg.Header.Add(52, DateTime.UtcNow.ToString(FixSettings.DateTimeFormat));
             msg.Add(98, "0");
             msg.Add(108, "30");
 

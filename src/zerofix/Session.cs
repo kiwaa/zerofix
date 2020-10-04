@@ -57,19 +57,19 @@ namespace zerofix
             {
                 case '0':
                     var hb = new FixMessage(ID, '0');
-                    hb.Add(52, DateTime.UtcNow.ToString(FixSettings.DateTimeFormat));
+                    hb.Header.Add(52, DateTime.UtcNow.ToString(FixSettings.DateTimeFormat));
                     SendAsync(hb);
                     break;
                 case '1':
                     var testAck = new FixMessage(ID, '0');
-                    testAck.Add(52, DateTime.UtcNow.ToString(FixSettings.DateTimeFormat));
+                    testAck.Header.Add(52, DateTime.UtcNow.ToString(FixSettings.DateTimeFormat));
                     testAck.Add(msg[Tags.TestReqID]);
                     SendAsync(testAck);
                     break;
                 case '2':
                     throw new NotImplementedException();
                 case '3':
-                    throw new NotImplementedException();
+                    break;
                 case '4':
                     throw new NotImplementedException();
                 case '5':
@@ -81,7 +81,7 @@ namespace zerofix
                     //HeartbeatInterval = msg[Tag]
 
                     var logon = new FixMessage(RevertID, 'A');
-                    logon.Add(52, DateTime.UtcNow.ToString(FixSettings.DateTimeFormat));
+                    logon.Header.Add(52, DateTime.UtcNow.ToString(FixSettings.DateTimeFormat));
                     logon.Add(98, "0");
                     logon.Add(108, "30");
                     SendAsync(logon);

@@ -11,7 +11,7 @@ namespace zerofix
         public const char Delimeter = '\x0001';
         private HashSet<int> _headerTags = new HashSet<int>(new[]
         {
-            8, 9, 35, 49, 56
+            8, 9, 35, 49, 52, 56
         });
 
         public FixFieldDictionary Header { get; init; }

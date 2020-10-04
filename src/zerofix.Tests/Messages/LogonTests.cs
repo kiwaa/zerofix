@@ -17,7 +17,7 @@ namespace zerofix.Tests.Messages
             var sessionId = new SessionIdentity("FIX.4.2", "EXECUTOR", "CLIENT1");
             var target = new FixMessage(sessionId, 'A');
             target.Header.Add(34, "1");
-            target.Add(52, "20200925-11:05:13.797");
+            target.Header.Add(52, "20200925-11:05:13.797");
             target.Add(98, "0");
             target.Add(108, "30");
 

@@ -24,7 +24,7 @@ namespace ZeroFix.Initiator
             Console.ReadLine();
             Console.WriteLine("sending");
             var msg = new FixMessage(_session.ID, 'D');
-            msg.Add(52, DateTime.UtcNow.ToString("yyyyMMdd-HH:mm:ss.fff"));
+            msg.Header.Add(52, DateTime.UtcNow.ToString("yyyyMMdd-HH:mm:ss.fff"));
             msg.Add(60, DateTime.UtcNow.ToString("yyyyMMdd-HH:mm:ss.fff"));
             msg.Add(1, "test");
             msg.Add(11, 1);
